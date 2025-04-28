@@ -1,22 +1,24 @@
 #!/bin/bash
 
 # Create the main project folder if it doesn't exist
-mkdir -p ~/Desktop/movie_len
+mkdir -p ~/Desktop/movies_project
 
 # Navigate into the project folder
-cd ~/Desktop/movie_len
+cd ~/Desktop/movies_project
 
 # Create subfolders
 mkdir -p api
 mkdir -p data
+mkdir -p lib
+mkdir -p graphs
 
-# Create empty Python scripts with NEW names
-touch api/tmdb_fetcher.py
-touch api/omdb_fetcher.py
-touch api/api_unified_fetcher.py
-touch build_movie_network.py
-touch analyze_movie_network.py
-touch run_movie_app.py
+# Create empty Python scripts with proper names
+touch api/tmdb_api.py
+touch api/omdb_api.py
+touch api/api_metadata_fetcher.py
+touch build_graph.py
+touch main.py
+touch analysis.py
 
 # Create requirements.txt
 cat <<EOL > requirements.txt
@@ -27,25 +29,29 @@ requests
 matplotlib
 EOL
 
+# Create setup scripts
+touch setup_movie.sh
+touch cleanup.sh
+
 # Create empty README
 touch README.md
 
-# Assume you already manually placed these into ~/Desktop/movie_len/
-# - movies.dat
-# - ratings.dat
-# - users.dat
+# Optional: Create people and top actors text files
+touch people_in_graph.txt
+touch top_actors.txt
 
-# Convert the .dat files to .csv properly
-echo "Converting MovieLens .dat files to CSV format..."
+echo "✅ Created folder structure and base files for movies_project!"
 
-# Convert the .dat files into .csv
-awk -F '::' 'BEGIN {OFS=","} {print $1, "\"" $2 "\"", "\"" $3 "\""}' movies.dat > data/movies.csv
-awk -F '::' 'BEGIN {OFS=","} {print $1, $2, $3, $4}' ratings.dat > data/ratings.csv
-awk -F '::' 'BEGIN {OFS=","} {print $1, $2, $3, $4, $5}' users.dat > data/users.csv
+# Assume you already manually placed these into ~/Desktop/movies_project/data/
+# - movies_long.csv
+# - movies_short.dat
 
-# Clean up
-rm movies.dat ratings.dat users.dat
-# Cleanup unnecessary .dat files after conversion (optional)
-rm movies.dat ratings.dat users.dat
+# Optional: Conversion command (if you are starting from .dat manually)
+# echo "Converting .dat files to CSV format..."
+# awk -F '::' 'BEGIN {OFS=","} {print $1, "\"" $2 "\"", "\"" $3 "\""}' movies.dat > data/movies.csv
+# awk -F '::' 'BEGIN {OFS=","} {print $1, $2, $3, $4}' ratings.dat > data/ratings.csv
+# awk -F '::' 'BEGIN {OFS=","} {print $1, $2, $3, $4, $5}' users.dat > data/users.csv
 
-echo "✅ Project movie_len is fully setup in ~/Desktop/movie_len!"
+# echo "✅ Converted MovieLens .dat files to CSVs!"
+
+echo "✅ Setup complete. Now you can start coding in ~/Desktop/movies_project!"
