@@ -7,6 +7,8 @@ import requests
 # TMDb API key: 5b4c9c706c4358243fb2945530eaddb4
 # OMDb API key: 19760cd4
 
+import requests
+
 TMDB_API_KEY = "5b4c9c706c4358243fb2945530eaddb4"
 OMDB_API_KEY = "19760cd4"
 
@@ -27,10 +29,8 @@ def get_movie_metadata(title_or_id):
         print(f"Error in get_movie_metadata: {e}")
         return {"plot": "Error retrieving metadata", "poster": None}
 
-
 def get_person_metadata(name):
     try:
-
         tmdb_search_url = f"https://api.themoviedb.org/3/search/person?query={name}&api_key={TMDB_API_KEY}"
         search_resp = requests.get(tmdb_search_url).json()
         if search_resp.get("results"):
