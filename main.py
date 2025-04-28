@@ -1,3 +1,4 @@
+# Required imports for API calls, graph construction, and visualization
 from api.api_metadata_fetcher import get_movie_metadata, get_person_metadata
 import networkx as nx
 from pyvis.network import Network
@@ -16,7 +17,7 @@ from datetime import datetime
 import platform
 import requests
 
-
+# Fetches metadata(title, poster, and other information) about a movie using TMDB API, besides handles API calls and exceptions
 def get_movie_metadata(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}"
     headers = {
@@ -42,7 +43,7 @@ def get_movie_metadata(movie_id):
         print(f"Exception fetching movie metadata: {e}")
         return None
 
-
+# Entry point of the program, to show the menu and guides user interaction.
 def main():
     print("\n=== Collaboration Network Project ===")
     print("Loading recommended dataset (short list)...")
@@ -52,11 +53,11 @@ def main():
     movie_ids = list(
         set(
             [
-                550,
-                680,
-                13,
-                299536,
-                24428,
+                550,     # Fight Club (1999)
+                680,     # Pulp Fiction (1994)
+                13,      # Forrest Gump (1994) 
+                299536,  # Avengers: Infinity War (2018)
+                24428,   # The Avengers (2012)
                 99861,
                 118340,
                 76341,
@@ -90,7 +91,7 @@ def main():
 
     movie_cache = {}
     person_cache = {}
-
+# To check if the poster image URL is working
     def is_valid_image_url(url):
         try:
             response = requests.head(url, timeout=3)
@@ -99,7 +100,7 @@ def main():
             )
         except:
             return False
-
+# To Display the collaboration network visually
     def visualize_graph(G, custom_title=None):
         from pyvis.network import Network
         import os
