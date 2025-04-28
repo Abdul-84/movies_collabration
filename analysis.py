@@ -1,4 +1,3 @@
-# analysis.py
 import difflib
 import json
 import os
