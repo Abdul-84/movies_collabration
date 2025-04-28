@@ -1,1 +1,11 @@
-Andy Serkis\nSamuel L. Jackson\nIan McKellen\nOrlando Bloom\nCate Blanchett\nIan Holm\nHugo Weaving\nJed Brophy\nBilly Jackson\nKatie Jackson\n
+This file contains Top Actors:
+Andy Serkis
+Samuel L. Jackson
+Ian McKellen
+Orlando Bloom
+Cate Blanchett
+Ian Holm
+Hugo Weaving
+Jed Brophy
+Billy Jackson
+Katie Jackson\n
