@@ -48,7 +48,7 @@ def main():
     print("\n=== Collaboration Network Project ===")
     print("Loading recommended dataset (short list)...")
     dataset_path = "data/movies_short.dat"
-    print("✅ Loaded short movie list.")
+    print("Loaded short movie list.")
 
     movie_ids = list(
         set(
@@ -106,7 +106,7 @@ def main():
         import os
         if G.number_of_nodes() > 50:
             print(
-                f"⚠️ Large graph with {G.number_of_nodes()} nodes. Filtering top 50 most connected..."
+                f" Large graph with {G.number_of_nodes()} nodes. Filtering top 50 most connected..."
             )
             top_nodes = sorted(G.nodes, key=lambda x: G.degree(x), reverse=True)[:50]
             G = G.subgraph(top_nodes).copy()
@@ -242,7 +242,7 @@ def main():
             os.system(f"start {path}")
         elif platform.system() == "Linux":
             os.system(f"xdg-open {path}")
-        print(f"✅ Graph written to {path}")
+        print(f" Graph written to {path}")
 
     while True:
         print("\nOptions:")
@@ -426,7 +426,7 @@ def main():
             """
             with open("person_info.html", "w", encoding="utf-8") as f:
                 f.write(html_content)
-            print("✅ Bio and image saved as 'person_info.html'!")
+            print("Bio and image saved as 'person_info.html'!")
             if platform.system() == "Darwin":
                 os.system(f"open person_info.html")
             elif platform.system() == "Windows":
@@ -453,7 +453,7 @@ def main():
                 else:
                     selected_community = random.choice(large_communities)
 
-                print(f"🎲 Randomly selected community with {len(selected_community)} nodes!")
+                print(f"Randomly selected community with {len(selected_community)} nodes!")
                 G_sub = G.subgraph(selected_community)
 
                 net_title = f"Random Collaboration Community - {len(selected_community)} Nodes"
