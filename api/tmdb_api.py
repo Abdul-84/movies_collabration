@@ -14,6 +14,20 @@ def _get_tmdb_api_key():
     return api_key
 
 
+def _format_request_error(error):
+    response = getattr(error, "response", None)
+    if response is not None:
+        reason = response.reason or "HTTP error"
+        return f"{response.status_code} {reason}"
+
+    request = getattr(error, "request", None)
+    if request is not None and request.url:
+        safe_url = request.url.split("?", 1)[0]
+        return f"{error.__class__.__name__} while requesting {safe_url}"
+
+    return error.__class__.__name__
+
+
 def get_movie_credits(movie_id):
     api_key = _get_tmdb_api_key()
     if not api_key:
@@ -26,7 +40,7 @@ def get_movie_credits(movie_id):
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
-        print(f"Error fetching movie credits: {e}")
+        print(f"Error fetching movie credits: {_format_request_error(e)}")
         return None
 
 
@@ -42,7 +56,7 @@ def get_movie_details(movie_id):
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
-        print(f"Error fetching movie details: {e}")
+        print(f"Error fetching movie details: {_format_request_error(e)}")
         return None
 
 
@@ -77,5 +91,5 @@ def get_person_metadata(name):
         }
 
     except requests.RequestException as e:
-        print(f"Error fetching person metadata: {e}")
+        print(f"Error fetching person metadata: {_format_request_error(e)}")
         return None

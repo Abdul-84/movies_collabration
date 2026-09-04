@@ -1,10 +1,12 @@
 #!/bin/bash
 
+PROJECT_DIR="/Volumes/sd/GitHub_ Repository/movies_collabration"
+
 # Create the main project folder if it doesn't exist
-mkdir -p ~/Desktop/movies_project
+mkdir -p "$PROJECT_DIR"
 
 # Navigate into the project folder
-cd ~/Desktop/movies_project
+cd "$PROJECT_DIR" || exit 1
 
 # Create subfolders
 mkdir -p api
@@ -40,9 +42,9 @@ touch README.md
 touch people_in_graph.txt
 touch top_actors.txt
 
-echo "✅ Created folder structure and base files for movies_project!"
+echo "✅ Created folder structure and base files in $PROJECT_DIR!"
 
-# Assume you already manually placed these into ~/Desktop/movies_project/data/
+# Assume you already manually placed these into $PROJECT_DIR/data/
 # - movies_long.csv
 # - movies_short.dat
 
@@ -54,4 +56,4 @@ echo "✅ Created folder structure and base files for movies_project!"
 
 # echo "✅ Converted MovieLens .dat files to CSVs!"
 
-echo "✅ Setup complete. Now you can start coding in ~/Desktop/movies_project!"
+echo "✅ Setup complete. Now you can start coding in $PROJECT_DIR!"
