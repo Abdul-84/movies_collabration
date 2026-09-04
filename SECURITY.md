@@ -2,20 +2,26 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+This is a learning and portfolio project. The `main` branch is the only maintained version.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Version | Supported |
+| --- | --- |
+| main | Yes |
+| older commits | No |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you find a security issue, open a GitHub issue with `[Security]` in the title and describe the problem clearly. Do not include live credentials, API keys, tokens, or private account information in the issue body.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Helpful details include:
+
+- What file or behavior is affected.
+- Steps to reproduce the issue.
+- Expected behavior versus actual behavior.
+- Any safe example data needed to understand the problem.
+
+## Secrets and API Keys
+
+This project uses external movie APIs. Real API keys should be provided through local environment variables such as `TMDB_API_KEY` and `OMDB_API_KEY`.
+
+Do not commit `.env` files, tokens, or API keys to the repository. If a key is accidentally committed, rotate it in the provider dashboard and update your local environment with the new value.
