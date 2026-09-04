@@ -1,14 +1,35 @@
 import os
+from pathlib import Path
 
 import requests
 
 TMDB_BASE_URL = "https://api.themoviedb.org/3/movie"
 TMDB_SEARCH_URL = "https://api.themoviedb.org/3/search/person"
 TMDB_PERSON_URL = "https://api.themoviedb.org/3/person"
+_LOCAL_ENV = None
+
+
+def _load_local_env():
+    global _LOCAL_ENV
+    if _LOCAL_ENV is not None:
+        return _LOCAL_ENV
+
+    values = {}
+    env_path = Path(__file__).resolve().parents[1] / ".env"
+    if env_path.is_file():
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            values[key.strip()] = value.strip().strip("\"'")
+
+    _LOCAL_ENV = values
+    return values
 
 
 def _get_tmdb_api_key():
-    api_key = os.getenv("TMDB_API_KEY")
+    api_key = os.getenv("TMDB_API_KEY") or _load_local_env().get("TMDB_API_KEY")
     if not api_key:
         print("TMDB_API_KEY is not set. Add it to your environment before running TMDb requests.")
     return api_key
