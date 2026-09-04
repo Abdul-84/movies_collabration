@@ -16,6 +16,17 @@ from networkx.algorithms.community import greedy_modularity_communities
 from datetime import datetime
 import platform
 import requests
+import subprocess
+
+
+def open_generated_file(path):
+    system = platform.system()
+    if system == "Darwin":
+        subprocess.run(["open", path], check=False)
+    elif system == "Windows":
+        os.startfile(path)
+    elif system == "Linux":
+        subprocess.run(["xdg-open", path], check=False)
 
 # Fetches metadata(title, poster, and other information) about a movie using TMDB API, besides handles API calls and exceptions
 def get_movie_metadata(movie_id):
@@ -236,12 +247,7 @@ def main():
         """
         path = os.path.abspath("collaboration_network.html")
         net.write_html(path)
-        if platform.system() == "Darwin":
-            os.system(f"open {path}")
-        elif platform.system() == "Windows":
-            os.system(f"start {path}")
-        elif platform.system() == "Linux":
-            os.system(f"xdg-open {path}")
+        open_generated_file(path)
         print(f" Graph written to {path}")
 
     while True:
@@ -427,12 +433,7 @@ def main():
             with open("person_info.html", "w", encoding="utf-8") as f:
                 f.write(html_content)
             print("Bio and image saved as 'person_info.html'!")
-            if platform.system() == "Darwin":
-                os.system(f"open person_info.html")
-            elif platform.system() == "Windows":
-                os.system(f"start person_info.html")
-            elif platform.system() == "Linux":
-                os.system(f"xdg-open person_info.html")
+            open_generated_file(os.path.abspath("person_info.html"))
 
         elif choice == "7":
             actors = [
