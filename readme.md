@@ -1,77 +1,133 @@
-Final Project Report: Movie Collaboration Network  --- Date(04-28-2025)
+# Movie Collaboration Network
 
-Project Overview
+A Python network-analysis project that maps how actors, directors, and movies connect through shared work. The project builds a weighted collaboration graph, lets users explore relationships from the command line, and exports visual network graphs for easier discovery.
 
-For my final project, I built a Movie Collaboration Network that maps the relationships between actors, directors, and movies.
-My goal was to explore how professional relationships in the film industry connect individuals across different projects, and to understand how collaboration patterns might impact success.
+<p>
+  <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3" />
+  <img src="https://img.shields.io/badge/NetworkX-Graph%20Analysis-1f6feb?style=for-the-badge" alt="NetworkX graph analysis" />
+  <img src="https://img.shields.io/badge/PyVis-Interactive%20Graphs-238636?style=for-the-badge" alt="PyVis interactive graphs" />
+  <img src="https://img.shields.io/badge/License-GPL--3.0-8a63d2?style=for-the-badge" alt="GPL-3.0 license" />
+</p>
 
-By visualizing these networks, users can explore:
-	•	Who are the most central people in the industry?
-	•	How closely are actors and directors interconnected?
-	•	Are there shortcuts between distant collaborators?
+![Collaboration network preview](Collaboration%20Network.png)
 
-⸻
+## Why This Project Exists
 
-Dataset and APIs Used
+Movie credits contain a lot of hidden structure. Two actors may be directly connected by one movie, or indirectly connected through a chain of shared collaborators. This project turns that information into a graph so those patterns are easier to inspect.
 
-I combined APIs and local CSV data to construct the network:
-	•	TMDb API: (The Movie Database) – Used for movie metadata, cast, crew, and poster images.
-         Link: https://developer.themoviedb.org/docs/getting-started
-	•	OMDb API: (Open Movie Database) – Used as a backup for additional movie information.
-         Link: https://www.omdbapi.com
-	•	MovieLens CSV Files:
-         Link: https://grouplens.org/datasets/movielens/latest/
-	•	movies_short.dat – A small, fast-loading list for testing.
-	•	movies_long.csv – A larger file for deeper analysis.
+The project explores questions such as:
 
-Data collected includes:
-	•	Movie titles and posters
-	•	Director and actor names
-	•	Collaboration relationships
-	•	Movie overviews (where available)
+- Which actors and directors are highly connected?
+- Who collaborates repeatedly across different movies?
+- What is the shortest collaboration path between two people?
+- Which communities appear naturally inside the movie network?
 
-Data is cached locally in a file (movie_cache.json) to improve performance for future runs.
+## Features
 
-⸻
+- Build a collaboration graph from selected movie IDs.
+- Add actors, directors, and movie metadata from TMDb and OMDb-style sources.
+- Find the most frequent collaborators for a selected person.
+- Find shortest collaboration paths between two people, including the movies that connect them.
+- Visualize the network for a single movie.
+- Export top actors by number of connections.
+- Detect collaboration communities and export interactive PyVis graph views.
+- Cache metadata locally so repeated runs are faster.
 
-User Interaction
+## Screenshots
 
-The program provides a command-line interface with nine options for users to explore the collaboration network:
-	1.	Most Frequent Collaborators:
-        View the top collaborators for a specific actor or director, including movies they’ve worked on.
-	2.	Connection Path Between Two People:
-        Find the shortest collaboration path between two individuals across different movies.
-	3.	View Collaboration Network for a Movie:
-        Visualize all the people connected through a single movie.
-	4.	List Top Actors, Directors, or Genres:
-        Display the top collaborators based on profession or genre (this option needs refinement).
-	5.	Visualize Top 20 Star Collaborators:
-        Show an interactive network graph of the top 20 most-connected individuals.
-	6.	Search for a Person (Bio & Image):
-        Retrieve a short biography and image for an actor or director.
-	7.	Export Top 10 Actors by Connections:
-        Generate a list of the top actors based on the number of collaborations.
-	8.	Detect and Visualize Collaboration Clusters:
-        Detect communities within the network and visualize random clusters interactively.
-	9.	Exit:
-        Safely close the program.
+### Full Collaboration Network
 
-⸻
+![Full collaboration network](Collaboration%20Network.png)
 
-Findings
-	•	Highly collaborative actors and directors form tightly-knit communities.
-	•	Some collaborations occur indirectly through shared connections rather than direct work.
-	•	Well-known figures typically have larger networks, acting as hubs.
-	•	Random collaboration clusters reveal hidden industry relationships.
+### Random Collaboration Community
 
-⸻
+![Random collaboration community](Random%20Collaboration%20Community.png)
 
-Additional Notes
-	•	Graphs are generated using NetworkX and visualized with PyVis.
-	•	Graphs are automatically saved in the /graphs folder with a timestamped filename.
-	•	Movie posters and biographies are fetched live but cached locally to improve load speed.
-	•	Some missing data is unavoidable due to incomplete API entries.
+## Tech Stack
 
-⸻
+- Python
+- NetworkX
+- PyVis
+- pandas
+- requests
+- matplotlib
+- TMDb API
+- OMDb API
 
-Screenshots, project structure diagrams, and full working code are included in the repository.
+## Project Structure
+
+```text
+.
+├── api/                    # API helpers for TMDb and OMDb metadata
+├── data/                   # Local movie data used by the project
+├── analysis.py             # Graph analysis helpers
+├── build_graph.py          # Collaboration graph builder
+├── main.py                 # Command-line interface and visualization flow
+├── requirements.txt        # Python dependencies
+├── top_actors.txt          # Example exported output
+└── people_in_graph.txt     # Example generated people list
+```
+
+## Setup
+
+1. Clone the repository.
+
+```bash
+git clone https://github.com/Abdul-84/movies_collabration.git
+cd movies_collabration
+```
+
+2. Create and activate a virtual environment.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+3. Install dependencies.
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Configure API keys.
+
+Create local environment variables before running the app. Do not commit real API keys.
+
+```bash
+export TMDB_API_KEY="your_tmdb_api_key"
+export OMDB_API_KEY="your_omdb_api_key"
+```
+
+You can use `.env.example` as a reference for the required names.
+
+5. Run the project.
+
+```bash
+python main.py
+```
+
+## Menu Options
+
+When the program starts, it opens a command-line menu for exploring the graph:
+
+1. View the most frequent collaborators for a person.
+2. Find a connection path between two people.
+3. View the collaboration network for a movie.
+4. List top actors, directors, or genres.
+5. Visualize the top star collaborators.
+6. Search for a person biography and image.
+7. Export the top actors by number of connections.
+8. Detect and visualize collaboration clusters.
+9. Exit the program.
+
+## Notes
+
+- Some movie records may be incomplete depending on API coverage.
+- Generated graph files and cache files are local run artifacts.
+- API keys should be stored locally as environment variables.
+- If keys were committed previously, rotate them in the provider dashboards before continuing development.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) for details.
