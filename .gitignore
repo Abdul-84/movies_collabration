@@ -1,0 +1,32 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Local secrets and config
+.env
+.env.*
+!.env.example
+
+# Generated outputs
+movie_cache.json
+graphs/
+*.html
+
+# Notebook and editor files
+.ipynb_checkpoints/
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
