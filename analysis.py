@@ -13,7 +13,11 @@ def find_most_frequent_collaborators(G, person):
             return f"{person} not found. Did you mean: {', '.join(suggestions)}?"
         return f"{person} not found in the network."
 
-    collaborators = [(neighbor, G[person][neighbor]) for neighbor in G.neighbors(person)]
+    collaborators = [
+        (neighbor, G[person][neighbor])
+        for neighbor in G.neighbors(person)
+        if G.nodes[neighbor].get("job") in {"actor", "director"}
+    ]
     sorted_collabs = sorted(collaborators, key=lambda x: x[1]['weight'], reverse=True)[:5]
     output = [f"Top collaborators for {person}:\n"]
 
@@ -44,7 +48,15 @@ def find_shortest_path_with_movies(G, source, target):
 
 def get_top_central_people(G, n=5):
     centrality = nx.degree_centrality(G)
-    top_people = sorted(centrality.items(), key=lambda x: x[1], reverse=True)[:n]
+    top_people = sorted(
+        (
+            (person, score)
+            for person, score in centrality.items()
+            if G.nodes[person].get("job") in {"actor", "director"}
+        ),
+        key=lambda x: x[1],
+        reverse=True,
+    )[:n]
     return "Top Central Figures:\n" + "\n".join([f"{person}: {score:.4f}" for person, score in top_people])
 
 def get_movie_subgraph(G, movie_title_fragment):
@@ -67,9 +79,14 @@ def detect_communities(G):
 
 def list_all_people(G):
     with open("people_in_graph.txt", "w", encoding="utf-8") as f:
-        for person in sorted(G.nodes()):
+        people = [
+            person
+            for person, data in G.nodes(data=True)
+            if data.get("job") in {"actor", "director"}
+        ]
+        for person in sorted(people):
             role = G.nodes[person].get("job", "Unknown")
             bio = G.nodes[person].get("bio", "No bio available")
             snippet = bio if len(bio) <= 120 else bio[:117] + "..."
             f.write(f"{person} — {role} | {snippet}\n")
-    return f"Saved list of people to 'people_in_graph.txt' with {len(G.nodes())} names."
+    return f"Saved list of people to 'people_in_graph.txt' with {len(people)} names."

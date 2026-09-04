@@ -49,6 +49,27 @@ def _format_request_error(error):
     return error.__class__.__name__
 
 
+def _select_person_result(results, query):
+    query = query.strip().lower()
+    for result in results:
+        if result.get("name", "").strip().lower() == query:
+            return result
+    return results[0]
+
+
+def _known_for_titles(items):
+    titles = []
+    for item in items:
+        title = item.get("title") or item.get("name")
+        release = item.get("release_date") or item.get("first_air_date") or ""
+        year = release[:4]
+        if title and year:
+            titles.append(f"{title} ({year})")
+        elif title:
+            titles.append(title)
+    return titles
+
+
 def get_movie_credits(movie_id):
     api_key = _get_tmdb_api_key()
     if not api_key:
@@ -92,10 +113,12 @@ def get_person_metadata(name):
         search_resp.raise_for_status()
         search_data = search_resp.json()
 
-        if not search_data.get("results"):
+        results = search_data.get("results", [])
+        if not results:
             return None
 
-        person_id = search_data["results"][0]["id"]
+        result = _select_person_result(results, name)
+        person_id = result["id"]
 
         details_resp = requests.get(
             f"{TMDB_PERSON_URL}/{person_id}",
@@ -107,8 +130,21 @@ def get_person_metadata(name):
 
         profile_path = data.get("profile_path")
         return {
-            "bio": data.get("biography", "No bio available."),
+            "id": person_id,
+            "name": data.get("name") or result.get("name") or name,
+            "bio": data.get("biography") or "No biography available in TMDb.",
             "image": f"https://image.tmdb.org/t/p/w200{profile_path}" if profile_path else None,
+            "known_for_department": (
+                data.get("known_for_department")
+                or result.get("known_for_department")
+                or "Not available"
+            ),
+            "birthday": data.get("birthday") or "Not available",
+            "deathday": data.get("deathday") or "Not available",
+            "place_of_birth": data.get("place_of_birth") or "Not available",
+            "popularity": data.get("popularity") or "Not available",
+            "homepage": data.get("homepage") or "Not available",
+            "known_for": _known_for_titles(result.get("known_for", [])),
         }
 
     except requests.RequestException as e:
