@@ -29,7 +29,7 @@ def _load_local_env():
 
 
 def _get_tmdb_api_key():
-    api_key = os.getenv("TMDB_API_KEY") or _load_local_env().get("TMDB_API_KEY")
+    api_key = _load_local_env().get("TMDB_API_KEY") or os.getenv("TMDB_API_KEY")
     if not api_key:
         print("TMDB_API_KEY is not set. Add it to your environment before running TMDb requests.")
     return api_key
